@@ -1,70 +1,19 @@
 # Linux基础命令
-<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+[TOC]
 
-- [Linux基础命令](#linux基础命令)
-	- [1 命令简介](#1-命令简介)
-		- [1.1 命令的构成](#11-命令的构成)
-		- [1.2 命令使用的原因](#12-命令使用的原因)
-		- [1.3 命令提示符](#13-命令提示符)
-	- [2 常用的命令](#2-常用的命令)
-		- [2.1 ls](#21-ls)
-			- [2.1.1 ls实验](#211-ls实验)
-		- [2.2 cd](#22-cd)
-			- [2.2.1 cd实验](#221-cd实验)
-		- [2.3 pwd](#23-pwd)
-			- [2.3.1 pwd实验](#231-pwd实验)
-	- [3 符号](#3-符号)
-		- [3.1 通配符 *](#31-通配符-)
-		- [3.2 匹配一个字符 ?](#32-匹配一个字符-)
-			- [3.2.1 *？实验](#321-实验)
-		- [3.3 | 管道](#33-管道)
-			- [3.3.1 |实验](#331-实验)
-	- [4 针对文件的的基本操作](#4-针对文件的的基本操作)
-		- [4.1 touch](#41-touch)
-			- [4.1.1 touch实验](#411-touch实验)
-			- [4.1.2 touch拓展实验](#412-touch拓展实验)
-		- [4.2 rm](#42-rm)
-			- [4.2.1 rm实验](#421-rm实验)
-		- [4.3 mkdir](#43-mkdir)
-			- [4.3.1 mkdir实验](#431-mkdir实验)
-		- [4.4 rmdir](#44-rmdir)
-			- [4.4.1 rmdir实验](#441-rmdir实验)
-		- [4.5 cp](#45-cp)
-			- [4.5.4 cp实验](#454-cp实验)
-		- [4.6 mv](#46-mv)
-			- [4.6.1 mv实验](#461-mv实验)
-	- [5 针对文件内容的基本操作](#5-针对文件内容的基本操作)
-		- [5.1 文件的查看](#51-文件的查看)
-			- [5.1.1 文件查看实验](#511-文件查看实验)
-		- [5.2 文件的修改](#52-文件的修改)
-			- [5.2.1 echo实验](#521-echo实验)
-		- [5.3 文件的过滤](#53-文件的过滤)
-			- [5.3.1 文件过滤实验](#531-文件过滤实验)
-- [uniq](#uniq)
-	- [6 帮助命令](#6-帮助命令)
-		- [6.1 type](#61-type)
-		- [6.2 --help](#62-help)
-		- [6.3 help](#63-help)
-		- [6.4 man](#64-man)
-- [此处“ECHO”代表手册名称；“（1）”代表 表示该手册位于第一节章](#此处echo代表手册名称1代表-表示该手册位于第一节章)
-		- [6.5 info（作为拓展内容）](#65-info作为拓展内容)
-	- [7 关于时间的命令](#7-关于时间的命令)
-		- [7.1 date](#71-date)
-			- [7.1.2 date拓展实验](#712-date拓展实验)
-		- [7.2 hwclock](#72-hwclock)
-		- [7.3 timedatectl](#73-timedatectl)
-		- [7.4 cal](#74-cal)
-	- [8 Linux基础命令作业](#8-linux基础命令作业)
+* 在教室物理机包括rhel7和rhel6两台实验虚拟机，上打开虚拟机命令: *rht-vmctl start rhel7* 
+  * 在物理机上远程登陆到虚拟机rhel7 *ssh root@rhel7-fN* ，*N* 为你的机器编号， *root*密码都是*uplooking*，系统中有一个普通用户*student*，其密码为*student*。
+  * 在虚拟机中关闭虚拟机的命令为*shutdown -h now*，也可以在物理机上执行*rht-vmctl poweroff rhel7*。
 
-<!-- /TOC -->
-* 在真机上打开虚拟机	`rht-vmctl start rhel7`
-* 在真机上远程登陆到虚拟机	`ssh root@172.25.0.10 rhel7`   密码都是uplooking
-* 在虚拟机中关闭虚拟机	`shutdown -h now`
-* 在真机上设置录屏时间没有限制`gsettings set org.gnome.settings-daemon.plugins.media-keys max-screencast-length "uint32 0"`
+* 在物理机上设置录屏视频，由于Gnome3的bug会有30秒时间限制，修正时间限制的命令如下：
 
-## 1 命令简介
+```shell
+[kiosk@fundation0 ~]$ gsettings set org.gnome.settings-daemon.plugins.media-keys max-screencast-length "uint32 0"
+```
 
-### 1.1 命令的构成
+## 命令简介
+
+### 命令的构成
 
 命令字 选项 参数
 
@@ -72,67 +21,67 @@
 * 选项: - 单个字符 -- 多个字符
 * 参数:对谁执行这个命令,可以有多个,选项和参数可以互换位置
 
-### 1.2 命令使用的原因
+### 命令使用的原因
 
 Shell是系统的用户界面，提供了用户与内核进行交互操作的一种接口。它接收用户输入的命令并把它送入内核去执行。实际上Shell是一个命令解释器，它解释由用户输入的命令并且把它们送到内核。从这里开始学习Linux命令，本课程让你更清楚地了解和掌握它，在Linux中命令是讲究大小写的。使用命令即快速又能减少机器的性能消耗。
 
-### 1.3 命令提示符
+### 命令提示符
 
-* # root 用户
+* \# root 用户
 * $ 一般用户
 * [ 用户的身份 @ 主机名 当前位置 ]
 
 当前位置显示的是目录名
 
 ```shell
-[root@www ~]# hostname
+[root@rhel7 ~]# hostname
 www.dabao.com
-[root@www ~]# groupadd tom
-[root@www ~]# useradd -g tom tom
-[root@www ~]# id tom
+[root@rhel7 ~]# groupadd tom
+[root@rhel7 ~]# useradd -g tom tom
+[root@rhel7 ~]# id tom
 uid=501(tom) gid=501(tom) groups=501(tom)
-[root@www ~]# su - tom
-[tom@www ~]$ who
+[root@rhel7 ~]# su - tom
+[tom@rhel7 ~]$ who
 root tty1
 2016-03-20 23:56 (:0)
 root pts/0
 2016-03-21 00:39 (:0.0)
 ```
 
-## 2 常用的命令
+## 常用的命令
 
-### 2.1 ls
+### ls
 
-|ls| 	list 的简写 查看当前目录下的所有文件 |
-|:--|:--|
-|-l| 	long 的缩写 详细列出当前目录下的所有文件属性 	七列 文件名 <=255 个字符|
-|-d|	directory 的缩写 查看当前目录本身的信息 |文件大小默认单位为 bites
-|-h|	以人性化的方式显示文件大小,录的大小并不代表目录内所有文件的大小 du -sh /etc<== 查看 etc 目录真正的大小|
-|-a| 	查看隐藏文件 以 . 开头的文件|
-|-R|	查看多层目录|
-|-b| 	特殊字符将以 \ 分割 ls 查看有特殊字符的文件|
+| 常用参数 | 含义及用法                                    |
+| :--- | :--------------------------------------- |
+| -l   | long 的缩写 详细列出当前目录下的所有文件属性 	七列 文件名 <=255 个字符 |
+| -d   | directory 的缩写 查看当前目录本身的信息                |
+| -h   | 以人性化的方式显示文件大小,录的大小并不代表目录内所有文件的大小 du -sh /etc<== 查看 etc 目录真正的大小 |
+| -a   | 查看隐藏文件 以 . 开头的文件                         |
+| -R   | 查看多层目录                                   |
+| -b   | 特殊字符将以 \ 分割 ls 查看有特殊字符的文件                |
 
-#### 2.1.1 ls实验
+#### ls实验
 
 ```shell
-[tom@www tmp]$ ls -hl
+[tom@rhel7 tmp]$ ls -hl
 total 68K
 srwxr-xr-x. 1 root root 0 Mar 20 23:59 gedit.root.3177893063
 drwx------. 2 root root 4.0K Feb 5 18:24 keyring-JL7MKY
-[tom@www tmp]$ ls -ld /tmp
+[tom@rhel7 tmp]$ ls -ld /tmp
 drwxrwxrwt. 22 root root 4096 Mar 21 00:43 /tmp
-[tom@www tmp]$ ls -la /tmp
+[tom@rhel7 tmp]$ ls -la /tmp
 total 96
 drwxrwxrwt. 22 root root 4096 Mar 21 00:43 .
 dr-xr-xr-x. 29 root root 4096 Mar 20 23:55 ..
 drwx------. 2 root root 4096 Mar 20 23:56 .esd-0
 drwx------. 2 cong cong 4096 Jan 1 18:33 .esd-500
-[tom@www tmp]$ ls -bl
+[tom@rhel7 tmp]$ ls -bl
 -rw-rw-r--. 1 tom tom 0 Mar 21 00:48 a\ b.txt
-[tom@www tmp]$ ls -l
+[tom@rhel7 tmp]$ ls -l
 -rw-rw-r--. 1 tom tom 0 Mar 21 00:48 a b.txt
-[tom@www tmp]$ mkdir -p a/b/c
-[tom@www tmp]$ ls -lR a/
+[tom@rhel7 tmp]$ mkdir -p a/b/c
+[tom@rhel7 tmp]$ ls -lR a/
 a/:
 total 4
 drwxrwxr-x. 3 tom tom 4096 Mar 21 00:50 b
@@ -143,46 +92,51 @@ a/b/c:
 total 0
 ```
 
-### 2.2 cd
-|cd|change directory 切换工作目录|
-|绝对路径|以根为起始的路径|
-|相对路径| ~当前用户的家目录 ;. 当前目录 ;.. 上一层用户 ;- 回到上一次所在位置|
+### cd
 
-#### 2.2.1 cd实验
+| cd   | change directory 切换工作目录                  |
+| :--- | :--------------------------------------- |
+| 绝对路径 | 以根为起始的路径                                 |
+| 相对路径 | ~当前用户的家目录 ;. 当前目录 ;.. 上一层用户 ;- 回到上一次所在位置 |
+
+#### cd实验
 
 ```shell
-[tom@www tmp]$ cd /etc/
-[tom@www etc]$ cd ~
-[tom@www ~]$ cd .
-[tom@www  ~]$ cd ..
-[tom@www  home]$ cd -
+[tom@rhel7 tmp]$ cd /etc/
+[tom@rhel7 etc]$ cd ~
+[tom@rhel7 ~]$ cd .
+[tom@rhel7  ~]$ cd ..
+[tom@rhel7  home]$ cd -
 /home/tom
 ```
 
-### 2.3 pwd
+### pwd
 
 pwd:print working directory 显示当前坐在位置的绝对路径
 
-#### 2.3.1 pwd实验
+#### pwd实验
 
 ```shell
-[tom@www tmp]$ cd /etc/nginx
-[tom@www nginx]$ cd conf.d
-[tom@www conf.d]$ pwd
+[tom@rhel7 tmp]$ cd /etc/nginx
+[tom@rhel7 nginx]$ cd conf.d
+[tom@rhel7 conf.d]$ pwd
 /etc/nginx/conf.d
 ```
 
-## 3 符号
+##  符号
 
-### 3.1 通配符 *
+### 通配符 *
 
-匹配任意一个字符
+匹配任意多个字符
 
-### 3.2 匹配一个字符 ?
+例如：a* 包括aa\*、ab\*、ac\* 等等 
 
-匹配指定位数
+### 通配符 ?
 
-#### 3.2.1 *？实验
+匹配任意单个字符
+例如： a? 可以是ab、ac、ad、a1、a9、a#等等
+
+#### *？实验
 
 ```shell
 rm -f *1
@@ -191,37 +145,39 @@ rm -f 1*1
 rm -f test?<== 想删除 test 后面有一个字符的文件
 ```
 
-### 3.3 | 管道
+### | 管道
 
 output | input
 
 对某些命令执行的结果去作操作,会用到管道
 
-#### 3.3.1 |实验
+#### | 管道实验
+
+详细列出 /tmp 目录下的文件,并截取以空格为分割的第三列
 
 ```shell
-详细列出 /tmp 目录下的文件,并截取以空格为分割的第三列
-[tom@www ~]$ ls -l /tmp|cut -d" " -f3
+[tom@rhel7 ~]$ ls -l /tmp|cut -d" " -f3
 tom
 tom
 root
 root
 root
 详细列出 /tmp 目录下的文件,截取含有关键字 tom 的行,再截取以空格为分割的第一列内容
-[tom@www ~]$ ls -l /tmp|grep tom|cut -d" " -f1
+[tom@rhel7 ~]$ ls -l /tmp|grep tom|cut -d" " -f1
 drwxrwxr-x.
 -rw-rw-r--.
 ```
 
-## 4 针对文件的的基本操作
+## 针对文件的的基本操作
 
-### 4.1 touch
+### touch
 
 touch [filename] <== 创建文件,参数可以跟多个
 
 如果要创建 50 个有规律的文件,例如 text1-text50
 
 利用参数扩展
+
 ```shell
 touch test{1..50}
 touch test{a..e}
@@ -234,17 +190,18 @@ touch test{a..e}_{1..3}---> 会创建 a_1 a_2 a_3...
 
 touch " " 可以放一些特殊字符
 
-#### 4.1.1 touch实验
+#### touch实验
 
-[tom@www ~]$ touch test{a..c}_{1..4}
-[tom@www ~]$ ls
+```shell
+[tom@rhel7 ~]$ touch test{a..c}_{1..4}
+[tom@rhel7 ~]$ ls
 testa_1 testa_4 testb_3 testc_2
 testa_2 testb_1 testb_4 testc_3
 testa_3 testb_2 testc_1 testc_4
 
 --full-time可以查看mtime的完整时间
 
-[tom@www ~]$ ls -l --full-time
+[tom@rhel7 ~]$ ls -l --full-time
 total 0
 -rw-rw-r--. 1 tom tom 0 2016-03-21 01:31:22.853039590 +0800 testa_1
 -rw-rw-r--. 1 tom tom 0 2016-03-21 01:31:22.853039590 +0800 testa_2
@@ -258,14 +215,16 @@ total 0
 -rw-rw-r--. 1 tom tom 0 2016-03-21 01:31:22.854039544 +0800 testc_2
 -rw-rw-r--. 1 tom tom 0 2016-03-21 01:31:22.854039544 +0800 testc_3
 -rw-rw-r--. 1 tom tom 0 2016-03-21 01:31:22.854039544 +0800 testc_4
-[tom@www ~]$ touch "ab cd"
-[tom@www ~]$ ls -b
+
+[tom@rhel7 ~]$ touch "ab cd"
+
+[tom@rhel7 ~]$ ls -b
 ab\ \ \ cd testa_3 testb_2 testc_1 testc_4
 testa_1 testa_4 testb_3 testc_2
 testa_2 testb_1 testb_4 testc_3
 ```
 
-#### 4.1.2 touch拓展实验
+#### touch拓展实验
 
 ```shell
 [booboo@rhel7 ~]$ touch booboo
@@ -282,9 +241,11 @@ Access: 2016-06-15 23:28:55.041578819 -0400     #atime 文件最近一次被访�
 Modify: 2016-06-15 23:28:55.041578819 -0400    #mtime 文件内容最近一次修改的时间
 Change: 2016-06-15 23:28:55.041578819 -0400    #ctime 文件属性最近一次修改的时间
  Birth: -
+```
 
 使用cat去访问booboo文件，可以发现atime被修改了
 
+```shell
 [booboo@rhel7 ~]$ cat booboo
 [booboo@rhel7 ~]$ stat booboo
   File: ‘booboo’
@@ -296,9 +257,11 @@ Access: 2016-06-15 23:32:35.898724748 -0400
 Modify: 2016-06-15 23:28:55.041578819 -0400
 Change: 2016-06-15 23:28:55.041578819 -0400
  Birth: -
+```
 
 通过chmod修改文件权限后，会看到ctime时间改变，通过ll命令看到的时间为mtime
 
+```shell
 [booboo@rhel7 ~]$ chmod 777 booboo
 [booboo@rhel7 ~]$ ll
 total 0
@@ -313,10 +276,11 @@ Access: 2016-06-15 23:32:35.898724748 -0400
 Modify: 2016-06-15 23:28:55.041578819 -0400
 Change: 2016-06-15 23:33:49.195445761 -0400
  Birth: -
-
+```
 
 通过echo命令向booboo文件追加一些内容，会看到mtime时间变了，并且ctime也变了，思考为什么？
 
+```shell
 [booboo@rhel7 ~]$ echo hi >> booboo
 [booboo@rhel7 ~]$ ll
 total 4
@@ -333,39 +297,40 @@ Change: 2016-06-15 23:34:53.251332183 -0400
  Birth: -
 ```
 
-### 4.2 rm
+### rm
 
-|rm| [filename] remove 删除文件,对 root 用户有提示,普通用户没有提示|
-|:--|:--|
-|-f| force 强制删除, root 无提示|
-|-i| 普通用户有提示的删除|
-|-r |递归删除,慎重使用 -rf |
+| rm   | [filename] remove 删除文件,对 root 用户有提示,普通用户没有提示 |
+| :--- | :--------------------------------------- |
+| -f   | force 强制删除, root 无提示                     |
+| -i   | 普通用户有提示的删除                               |
+| -r   | 递归删除,慎重使用 -rf                            |
 
-#### 4.2.1 rm实验
+#### rm实验
+
+普通用户 tom
 
 ```shell
-
-普通用户 tom
-
-[tom@www ~]$ rm testa_1
-[tom@www ~]$ rm -i testa_2
+[tom@rhel7 ~]$ rm testa_1
+[tom@rhel7 ~]$ rm -i testa_2
 rm: remove regular empty file `testa_2'? Y
-
-root 用户
-
-[root@www ~]# rm a.test
-rm: remove regular empty file `a.test'? Y
-[root@www ~]# rm -f b.test
-
-普通用户 tom
-
-[tom@www ~]$ mkdir -p a/b/c
-[tom@www ~]$ rm a/
-rm: cannot remove `a/': Is a directory
-[tom@www ~]$ rm -r a/
 ```
 
-### 4.3 mkdir
+root 用户
+```shell
+[root@rhel7 ~]# rm a.test
+rm: remove regular empty file `a.test'? Y
+[root@rhel7 ~]# rm -f b.test
+```
+
+普通用户 tom
+```shell
+[tom@rhel7 ~]$ mkdir -p a/b/c
+[tom@rhel7 ~]$ rm a/
+rm: cannot remove `a/': Is a directory
+[tom@rhel7 ~]$ rm -r a/
+```
+
+### mkdir
 
 mkdir:make directory 创建目录
 
@@ -375,25 +340,25 @@ mkdir:make directory 创建目录
 
 `touch {a..e}/file{1..4}`<== 在 a-e 的目录下新建 file1-file4 文件
 
-#### 4.3.1 mkdir实验
+#### mkdir实验
 
 ```shell
-[tom@www ~]$ mkdir -p test/test1
-[tom@www ~]$ ls
+[tom@rhel7 ~]$ mkdir -p test/test1
+[tom@rhel7 ~]$ ls
 ab cd testa_3 testb_2 testc_1 testc_4
 p        testa_4 testb_3 testc_2
 test    testb_1 testb_4 testc_3
-[tom@www ~]$ mkdir {a..f}
-[tom@www ~]$ ls
+[tom@rhel7 ~]$ mkdir {a..f}
+[tom@rhel7 ~]$ ls
 a d test testb_2 testc_2
 ab cd e testa_3 testb_3 testc_3
 b f testa_4 testb_4 testc_4 c p testb_1 testc_1
-[tom@www ~]$ touch {a..f}/file{1..4}
-[tom@www ~]$ ls
+[tom@rhel7 ~]$ touch {a..f}/file{1..4}
+[tom@rhel7 ~]$ ls
 a d test testb_2 testc_2
 ab cd e testa_3 testb_3 testc_3
 b f testa_4 testb_4 testc_4 c p testb_1 testc_1
-[tom@www ~]$ ls -rR
+[tom@rhel7 ~]$ ls -rR
 .:
 testc_4 testb_4 testa_4 f b
 testc_3 testb_3 testa_3 e ab cd
@@ -417,7 +382,7 @@ file4 file3 file2 file1
 file4 file3 file2 file1
 ```
 
-### 4.4 rmdir
+### rmdir
 
 rmdir:remove directory 删除目录
 
@@ -425,7 +390,7 @@ rmdir:remove directory 删除目录
 
 `rm -rf [d_name]`<== 可以删除空目录
 
-#### 4.4.1 rmdir实验
+#### rmdir 实验
 
 ```shell
 [booboo@rhel7 ~]$ mkdir aa
@@ -443,7 +408,7 @@ total 4
 -rwxrwxrwx. 1 booboo booboo 3 Jun 15 23:34 booboo
 ```
 
-### 4.5 cp
+### cp
 
 cp:copy 复制文件
 
@@ -453,47 +418,47 @@ cp 源文件 目的地(目录)
 
 -r 复制目录
 
-#### 4.5.4 cp实验
+#### cp实验
 
 ```shell
 
 使用 root 用户,进入 tom 的家目录
 
-[root@www ~]# cd /home/tom
+[root@rhel7 ~]# cd /home/tom
 
 保留原文件属性复制 testa_3 文件到 /tmp 目录下
 
-[root@www tom]# cp -p testa_3 /tmp
-[root@www tom]# ll /tmp/testa_3
+[root@rhel7 tom]# cp -p testa_3 /tmp
+[root@rhel7 tom]# ll /tmp/testa_3
 -rw-rw-r--. 1 tom tom 0 Mar 21 01:31 /tmp/testa_3
-[root@www tom]# cp testa_4 /tmp
-[root@www tom]# ll /tmp/testa_4
+[root@rhel7 tom]# cp testa_4 /tmp
+[root@rhel7 tom]# ll /tmp/testa_4
 -rw-r--r--. 1 root root 0 Mar 21 01:55 /tmp/testa_4
 
 拷贝目录 a 到 /tmp 下,必须加上 -r ,因为 a 目录下还有 b/c 目录
 
-[root@www tom]# cp a /tmp
+[root@rhel7 tom]# cp a /tmp
 cp: omitting directory `a'
-[root@www tom]# cp -r a /tmp
+[root@rhel7 tom]# cp -r a /tmp
 ```
 
-### 4.6 mv
+### mv
 
 mv:move 移动 移动和重命名
 
 mv 源文件 目的地(目录)
 
-#### 4.6.1 mv实验
+#### mv实验
 ```shell
-[tom@www ~]$ mv testa_3 test
-[tom@www ~]$ ls
+[tom@rhel7 ~]$ mv testa_3 test
+[tom@rhel7 ~]$ ls
 a
 c f testa_4 testb_3 testc_2
 ab cd d p testb_1 testb_4 testc_3
 b
 e test testb_2 testc_1 testc_4
-[tom@www ~]$ mv test??? f/
-[tom@www ~]$ ll -R f
+[tom@rhel7 ~]$ mv test??? f/
+[tom@rhel7 ~]$ ll -R f
 f:
 total 0
 -rw-rw-r--. 1 tom tom 0 Mar 21 01:47 file1
@@ -512,23 +477,23 @@ total 0
 ```
 
 
-## 5 针对文件内容的基本操作
+## 针对文件内容的基本操作
 
-### 5.1 文件的查看
+### 文件的查看
 
-|文件|命令|解释|
-|:--|:--|:--|
-|小文件|	cat| 以正序查看 调用内存比较多 -n 指定行号|
-||tac 以倒序查看 调用内存比较多|
-|大文件|head |查看文件首部,默认 10 行 -n 指定行号|
-|大文件|tail 查看文件尾部,默认 10 行-n 指定行号-f 显示动态追加内容|
-||more |按空格 space 下一页 b 向上翻页 enter 下一行 |
-||less| 比 more 多了一个搜索功能 /[ 需搜索的子段 ]N 向上查找 n 向下查 q 退出|
+| 文件   | 命令                                    | 解释                                       |
+| :--- | :------------------------------------ | :--------------------------------------- |
+| 小文件  | cat                                   | 以正序查看 调用内存比较多 -n 指定行号                    |
+|      | tac 以倒序查看 调用内存比较多                     |                                          |
+| 大文件  | head                                  | 查看文件首部,默认 10 行 -n 指定行号                   |
+| 大文件  | tail 查看文件尾部,默认 10 行-n 指定行号-f 显示动态追加内容 |                                          |
+|      | more                                  | 按空格 space 下一页 b 向上翻页 enter 下一行           |
+|      | less                                  | 比 more 多了一个搜索功能 /[ 需搜索的子段 ]N 向上查找 n 向下查 q 退出 |
 
-#### 5.1.1 文件查看实验
+#### 文件查看实验
 
 ```shell
-[tom@www ~]$ cat -n passwd
+[tom@rhel7 ~]$ cat -n passwd
 1 root:x:0:0:root:/root:/bin/bash
 2 bin:x:1:1:bin:/bin:/sbin/nologin
 3 daemon:x:2:2:daemon:/sbin:/sbin/nologin
@@ -541,7 +506,7 @@ total 0
 10 cong:x:500:500:cong:/home/cong:/bin/bash
 11 nginx:x:496:491:Nginx web server:/var/lib/nginx:/sbin/nologin
 12 tom:x:501:501::/home/tom:/bin/bash
-[tom@www ~]$ tac passwd
+[tom@rhel7 ~]$ tac passwd
 tom:x:501:501::/home/tom:/bin/bash
 nginx:x:496:491:Nginx web server:/var/lib/nginx:/sbin/nologin
 cong:x:500:500:cong:/home/cong:/bin/bash
@@ -556,16 +521,16 @@ bin:x:1:1:bin:/bin:/sbin/nologin
 root:x:0:0:root:/root:/bin/bash
 ```
 
-### 5.2 文件的修改
+### 文件的修改
 
-|软件|解释|
-|:--|:--|
-|LibreOffice|.odt 结尾 类似于 windows office|
-|gedit|类似于 windows 记事本|
-|vim|插入模式 后面会专门讲到 vim 编辑器的使用 退出模式 命令模式|
-|echo |本身代表回显 echo xxx > file 将 xxx 写入 file 文件,并覆盖原有内容 echo xxx >> file 在 file 文件追加|
+| 软件          | 解释                                       |
+| :---------- | :--------------------------------------- |
+| LibreOffice | .odt 结尾 类似于 windows office               |
+| gedit       | 类似于 windows 记事本                          |
+| vim         | 插入模式 后面会专门讲到 vim 编辑器的使用 退出模式 命令模式        |
+| echo        | 本身代表回显 echo xxx > file 将 xxx 写入 file 文件,并覆盖原有内容 echo xxx >> file 在 file 文件追加 |
 
-#### 5.2.1 echo实验
+#### echo实验
 
 ```shell
 [booboo@rhel7 ~]$ echo hi > file1
@@ -580,7 +545,7 @@ booboo
 hihihihi
 ```
 
-### 5.3 文件的过滤
+### 文件的过滤
 
 grep
 
@@ -640,7 +605,7 @@ uniq
 `uniq [file_name]`
 
 
-#### 5.3.1 文件过滤实验
+#### 文件过滤实验
 
 ```shell
 
@@ -735,18 +700,18 @@ booboo 20 100
 mark 20 200
 ```
 
-## 6 帮助命令
+## 帮助命令
 
-|命令|解释|
-|:--|:--|
-|type [ 命令 ] |判断是内部命令 or 外部命令|
-|--help|外部命令|
-|help|只针对系统内部命令|
-|man []|内容清晰、详细,在线文档,支持搜索( /name ) `man [ 章节 ] [name]` |章节一共有 8 种 `man -k passwd`<== 查看 passwd 属于哪个章节|
-|info []|太详细|
-|/usr/share/doc|存放帮助文档,在与软件同名的目录下有所有软件的使用文档|
+| 命令             | 解释                                       |
+| :------------- | :--------------------------------------- |
+| type [ 命令 ]    | 判断是内部命令 or 外部命令                          |
+| --help         | 外部命令                                     |
+| help           | 只针对系统内部命令                                |
+| man []         | 内容清晰、详细,在线文档,支持搜索( /name ) `man [ 章节 ] [name]` |
+| info []        | 太详细                                      |
+| /usr/share/doc | 存放帮助文档,在与软件同名的目录下有所有软件的使用文档              |
 
-** man和—help以及help的区别 **
+**man和—help以及help的区别**
 
 man命令
 
@@ -758,7 +723,7 @@ man命令
 help命令
 是选项帮助命令，顾名思义  你可以把单独某个命令的某个选项列出来，方便快捷很多，省去了man当中查找的繁琐，但是help只支持shell的内部命令。内部命令即存储在shell内部可以直接调用的一些简单命令，比如说echo，cd，pwd等。
 
-### 6.1 type
+### type
 
 type命令用来显示指定命令的类型，判断给出的指令是内部指令还是外部指令。
 
@@ -814,7 +779,7 @@ coreutils-8.22-11.el7.x86_64
 if is a shell keyword
 ```
 
-### 6.2 --help
+### --help 参数
 
 --help参数是大所数命令自带的选项，用于查看使用帮助。
 
@@ -845,15 +810,14 @@ Mandatory arguments to long options are mandatory for short options too.
   -f                         do not sort, enable -aU, disable -ls --color
 ```
 
-### 6.3 help
+### help
 
 help只支持shell的内部命令。内部命令即存储在shell内部可以直接调用的一些简单命令,例如cd,echo,help等。
 
-```shell
 help(选项)(参数)
 -s：输出短格式的帮助信息。仅包括命令格式。
 
-
+```shell
 [booboo@rhel7 ~]$ type cd
 cd is a shell builtin
 [booboo@rhel7 ~]$ help cd
@@ -892,10 +856,10 @@ echo is a shell builtin
 echo: echo [-neE] [arg ...]
 ```
 
-### 6.4 man
+### man
 man命令是Linux下的帮助指令，通过man指令可以查看Linux中的指令帮助、配置文件帮助和编程帮助等信息。
 
-```shell
+```config
 语法
 man(选项)(参数)
 选项
@@ -905,7 +869,6 @@ man(选项)(参数)
 -M：指定man手册搜索的路径。
 参数
 数字：指定从哪本man手册中搜索帮助
-
 关键字：指定要搜索帮助的关键字
 ```
 
@@ -988,7 +951,7 @@ SEE ALSO
 GNU coreutils 8.22               January 2014                         ECHO(1)
 ```
 
-### 6.5 info（作为拓展内容）
+### info（作为拓展内容）
 
 info命令是Linux下info格式的帮助指令。 就内容来说，info页面比man page编写得要更好、更容易理解，也更友好，但man page使用起来确实要更容易得多。一个man page只有一页，而info页面几乎总是将它们的内容组织成多个区段（称为节点），每个区段也可能包含子区段（称为子节点）。理解这个命令的窍门就是不仅要学习如何在单独的Info页面中浏览导航，还要学习如何在节点和子节点之间切换。可能刚开始会一时很难在info页面的节点之间移动和找到你要的东西，真是具有讽刺意味：原本以为对于新手来说，某个东西比man命令会更好些，但实际上学习和使用起来更困难。
 
@@ -1034,13 +997,13 @@ Ctrl-l 刷新当前页，若当前文档显示情况有问题时
 Ctrl-g 取消所键入的指令
 ```
 
-## 7 关于时间的命令
+## 关于时间的命令
 
-### 7.1 date
+### date
 
 date命令是显示或设置系统时间与日期。 很多shell脚本里面需要打印不同格式的时间或日期，以及要根据时间和日期执行操作。延时通常用于脚本执行过程中提供一段等待的时间。日期可以以多种格式去打印，也可以使用命令设置固定的格式。在类UNIX系统中，日期被存储为一个整数，其大小为自世界标准时间（UTC）1970年1月1日0时0分0秒起流逝的秒数。
 
-```shell
+```config
 语法
 date(选项)(参数)
 选项
@@ -1051,37 +1014,39 @@ date(选项)(参数)
 --version：显示版本信息。
 参数
 <+时间日期格式>：指定显示时使用的日期时间格式。
-
-
-日期格式字符串列表
-%H 小时，24小时制（00~23）
-%I 小时，12小时制（01~12）
-%k 小时，24小时制（0~23）
-%l 小时，12小时制（1~12）
-%M 分钟（00~59）
-%p 显示出AM或PM
-%r 显示时间，12小时制（hh:mm:ss %p）
-%s 从1970年1月1日00:00:00到目前经历的秒数
-%S 显示秒（00~59）
-%T 显示时间，24小时制（hh:mm:ss）
-%X 显示时间的格式（%H:%M:%S）
-%Z 显示时区，日期域（CST）
-%a 星期的简称（Sun~Sat）
-%A 星期的全称（Sunday~Saturday）
-%h,%b 月的简称（Jan~Dec）
-%B 月的全称（January~December）
-%c 日期和时间（Tue Nov 20 14:12:58 2012）
-%d 一个月的第几天（01~31）
-%x,%D 日期（mm/dd/yy）
-%j 一年的第几天（001~366）
-%m 月份（01~12）
-%w 一个星期的第几天（0代表星期天）
-%W 一年的第几个星期（00~53，星期一为第一天）
-%y 年的最后两个数字（1999则是99）
-%Y 年1999
 ```
 
-7.1.1 date实验
+日期格式字符串列表
+| 格式    | 说明                              |
+| :---- | :------------------------------ |
+| %H    | 小时，24小时制（00~23）                 |
+| %I    | 小时，12小时制（01~12）                 |
+| %k    | 小时，24小时制（0~23）                  |
+| %l    | 小时，12小时制（1~12）                  |
+| %M    | 分钟（00~59）                       |
+| %p    | 显示出AM或PM                        |
+| %r    | 显示时间，12小时制（hh:mm:ss %p）         |
+| %s    | 从1970年1月1日00:00:00到目前经历的秒数      |
+| %S    | 显示秒（00~59）                      |
+| %T    | 显示时间，24小时制（hh:mm:ss）            |
+| %X    | 显示时间的格式（%H:%M:%S）               |
+| %Z    | 显示时区，日期域（CST）                   |
+| %a    | 星期的简称（Sun~Sat）                  |
+| %A    | 星期的全称（Sunday~Saturday）          |
+| %h,%b | 月的简称（Jan~Dec）                   |
+| %B    | 月的全称（January~December）          |
+| %c    | 日期和时间（Tue Nov 20 14:12:58 2012） |
+| %d    | 一个月的第几天（01~31）                  |
+| %x,%D | 日期（mm/dd/yy）                    |
+| %j    | 一年的第几天（001~366）                 |
+| %m    | 月份（01~12）                       |
+| %w    | 一个星期的第几天（0代表星期天）                |
+| %W    | 一年的第几个星期（00~53，星期一为第一天）         |
+| %y    | 年的最后两个数字（1999则是99）              |
+| %Y    | 年1999                           |
+
+
+#### date 实验
 
 ```shell
 格式化输出
@@ -1127,9 +1092,9 @@ date: cannot set date: Operation not permitted
 Thu May  9 15:02:02 EDT 2019
 ```
 
-#### 7.1.2 date拓展实验
+#### date 拓展实验
 
-1)有时需要检查一组命令花费的时间 比如
+1) 有时需要检查一组命令花费的时间 比如
 
 ```shell
 ping执行的时间
@@ -1152,7 +1117,7 @@ difference=$(( $end - $start ))
 echo $difference seconds.
 ```
 
-2)创建以当前时间为文件名的目录
+2) 创建以当前时间为文件名的目录
 
 ```shell
 [root@rhel7 ~]# mkdir `date +%Y%m%d`
@@ -1193,7 +1158,7 @@ Input your birthday(YYYYmmdd):19960902
 There is :77 days.
 ```
 
-### 7.2 hwclock
+### hwclock
 hwclock命令是一个硬件时钟访问工具，它可以显示当前时间、设置硬件时钟的时间和设置硬件时钟为系统时间，也可设置系统时间为硬件时钟的时间。 在Linux中有硬件时钟与系统时钟等两种时钟。硬件时钟是指主机板上的时钟设备，也就是通常可在BIOS画面设定的时钟。系统时钟则是指kernel中的时钟。当Linux启动时，系统时钟会去读取硬件时钟的设定，之后系统时钟即独立运作。所有Linux相关指令与函数都是读取系统时钟的设定。
 
 查看 BIOS 时间
@@ -1204,7 +1169,7 @@ hwclock命令是一个硬件时钟访问工具，它可以显示当前时间、�
 
 `hwclock --hctosys` 将系统时间与硬件时间同步,以硬件为基准
 
-### 7.3 timedatectl
+### timedatectl
 
 比 date 多了时区的功能
 
@@ -1308,7 +1273,7 @@ DST	Daylight Saving Time日光节约时间、夏令时
 	1986年至1991年，中国在全国范围实行了六年夏令时，1992年4月5日后不再实行。
 ```
 
-### 7.4 cal
+### cal
 
 cal命令用于显示当前日历，或者指定日期的日历。
 ```shell
@@ -1347,7 +1312,7 @@ Sun Mon Tue Wed Thu Fri Sat
 178 179 180 181 182
 ```
 
-## 8 Linux基础命令作业
+## Linux 基础命令作业
 
 
 1. 在/tmp 目录下创建 testdir 目录,在该目录下创建 file1 到 file30 的 30 个文件。
@@ -1362,7 +1327,7 @@ Sun Mon Tue Wed Thu Fri Sat
 10. 查看该文件内容。
 11. 统计一下该文件共有几行,几个单词,几个字节。
 12. 将/etc/passwd 里以 bash 结尾的行过滤出来,并从中截取第一列字
-段内容。
+   段内容。
 13. 统计/boot/下所有文件的属性中含 root 字段的文件共有几个。
 14. 熟悉一下 vim 编辑器,利用 vim 编辑器书写整理一下今天所学的 知识点。
 15. 判断一下 boot 目录下文件的内容类型,并将属于 ASCII 码文件内容 类型的文件名显示到屏幕上
