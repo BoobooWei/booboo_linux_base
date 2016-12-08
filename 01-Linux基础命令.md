@@ -59,7 +59,7 @@ root pts/0
 | -h   | 以人性化的方式显示文件大小,录的大小并不代表目录内所有文件的大小 du -sh /etc<== 查看 etc 目录真正的大小 |
 | -a   | 查看隐藏文件 以 . 开头的文件                         |
 | -R   | 查看多层目录                                   |
-| -b   | 特殊字符将以 \ 分割 ls 查看有特殊字符的文件                |
+| -b   | 特殊字符将以 分割 ls 查看有特殊字符的文件                 |
 
 #### ls实验
 
@@ -112,7 +112,7 @@ total 0
 
 ### pwd
 
-pwd:print working directory 显示当前坐在位置的绝对路径
+pwd:print working directory 显示当前所在位置的绝对路径
 
 #### pwd实验
 
@@ -142,7 +142,8 @@ pwd:print working directory 显示当前坐在位置的绝对路径
 rm -f *1
 rm -f 1*
 rm -f 1*1
-rm -f test?<== 想删除 test 后面有一个字符的文件
+rm -f test?
+想删除 test 后面有一个字符的文件
 ```
 
 ### | 管道
@@ -172,7 +173,9 @@ drwxrwxr-x.
 
 ### touch
 
-touch [filename] <== 创建文件,参数可以跟多个
+touch [filename] 
+
+创建文件,参数可以跟多个
 
 如果要创建 50 个有规律的文件,例如 text1-text50
 
@@ -334,11 +337,17 @@ rm: cannot remove `a/': Is a directory
 
 mkdir:make directory 创建目录
 
-`mkdir -p /test/test1`<== 第归创建目录
+`mkdir -p /test/test1`
 
-`mkdir {a..e}`<== 创建 a-e 的目录
+第归创建目录
 
-`touch {a..e}/file{1..4}`<== 在 a-e 的目录下新建 file1-file4 文件
+`mkdir {a..e}`
+
+创建 a-e 的目录
+
+`touch {a..e}/file{1..4}`
+
+ 在 a-e 的目录下新建 file1-file4 文件
 
 #### mkdir实验
 
@@ -388,7 +397,9 @@ rmdir:remove directory 删除目录
 
 只能删除空目录,出于安全性的考虑
 
-`rm -rf [d_name]`<== 可以删除空目录
+`rm -rf [d_name]`
+
+可以删除空目录
 
 #### rmdir 实验
 
@@ -481,14 +492,14 @@ total 0
 
 ### 文件的查看
 
-| 文件   | 命令                                    | 解释                                       |
-| :--- | :------------------------------------ | :--------------------------------------- |
-| 小文件  | cat                                   | 以正序查看 调用内存比较多 -n 指定行号                    |
-|      | tac 以倒序查看 调用内存比较多                     |                                          |
-| 大文件  | head                                  | 查看文件首部,默认 10 行 -n 指定行号                   |
-| 大文件  | tail 查看文件尾部,默认 10 行-n 指定行号-f 显示动态追加内容 |                                          |
-|      | more                                  | 按空格 space 下一页 b 向上翻页 enter 下一行           |
-|      | less                                  | 比 more 多了一个搜索功能 /[ 需搜索的子段 ]N 向上查找 n 向下查 q 退出 |
+| 文件   | 命令   | 解释                                       |
+| :--- | :--- | :--------------------------------------- |
+| 小文件  | cat  | 以正序查看 调用内存比较多 -n 显示行号                    |
+|      | tac  | 以倒序查看 调用内存比较多                            |
+| 大文件  | head | 查看文件首部，默认10行 ，-n 指定行号                    |
+|      | tail | 查看文件尾部，默认10行，-n指定行号                      |
+|      | more | 按空格 space 下一页 b 向上翻页 enter 下一行           |
+|      | less | 比 more 多了一个搜索功能 /[ 需搜索的子段 ]N 向上查找 n 向下查 q 退出 |
 
 #### 文件查看实验
 
@@ -553,12 +564,20 @@ grep
 
 ```shell
 grep [OPTIONS] PATTERN [FILE...]
-grep [ 字符串 ] [ 文件 ]<== 过滤带有 [ 字符串 ] 的行
-grep [^ 字符串 ] [ 文件 ]<== 过滤以 [ 字符串 ] 为开始的行
-grep [ 字符串 $] [ 文件 ]<== 过滤以 [ 字符串 ] 为结尾的行
-grep -v [ 字符串 ] [ 文件 ]---> 反选,不带某个字符串的行
-eg. grep ^root /etc/passwd<== 过滤以 root 为开始的行
-grep bash$ /etc/passwd<== 过滤以 bash 为结尾的行
+过滤带有 [ 字符串 ] 的行
+grep [ 字符串 ] [ 文件 ]	
+过滤以 [ 字符串 ] 为开始的行
+grep [^ 字符串 ] [ 文件 ]
+过滤以 [ 字符串 ] 为结尾的行
+grep [ 字符串 $] [ 文件 ]
+过滤反选
+grep -v [ 字符串 ] [ 文件 ]
+
+eg.
+过滤以 root 为开始的行
+ grep ^root /etc/passwd
+过滤以 bash 为结尾的行
+grep bash$ /etc/passwd 
 ```
 
 cut
@@ -595,7 +614,8 @@ sort
 -r 降序排列
 -k 指定某一列
 -t 分隔符
-eg.sort -n -k 2 -t : file1 <== 将 file1 以第二列的数字排序,列以:分割
+eg.sort -n -k 2 -t : file1 
+将 file1 以第二列的数字排序,列以:分割
 ```
 
 uniq
