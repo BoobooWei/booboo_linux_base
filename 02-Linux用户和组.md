@@ -48,7 +48,7 @@
    rhel7 root_uid=0 sys_uid=201-999 user_uid=1000-65535
 4. GID: 用户组标识符 root_guid=0
 5. 用户信息说明栏 
-6. 家目录 : 用户的家目录 root 的家目录在 /root, 默认用户的家目录在 /home/yourIDname
+6. 家目录 : 用户的家目录 root 的家目录在 /root, 默认用户的家目录在 /home/yourname
 7. Shell: 命令解释器
 
    * 系统默认为 /bin/bash
@@ -111,7 +111,7 @@ root:x:0:root,dmtsai
 
 创建新用户时默认的配置信息
 ```shell
-GROUP=100 <== 预设的群组
+GROUP=100 <== 预设的群组，现已不生效，如果创建用户时不指定群组，则使用与用户同名的群组
 HOME=/home <== 默认的家目录所在目录
 INACTIVE=-1 <== 密码失效日 , 在 shadow 第 7 栏
 EXPIRE= <== 账号失效日 , 在 shadow 第 8 栏
