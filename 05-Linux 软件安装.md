@@ -1,36 +1,21 @@
 # Linux 软件安装
-<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
-- [Linux 软件安装](#linux-软件安装)
-	- [1 源代码安装](#1-源代码安装)
-		- [1.1 源代码安装步骤](#11-源代码安装步骤)
-		- [1.2 卸载步骤](#12-卸载步骤)
-		- [1.3 实验](#13-实验)
-	- [2 二进制安装](#2-二进制安装)
-	- [3 RPM](#3-rpm)
-	- [4 YUM](#4-yum)
-		- [4.1 yum 的作用](#41-yum-的作用)
-		- [4.2 yum 仓库](#42-yum-仓库)
-		- [4.3 依赖关系](#43-依赖关系)
-			- [4.3.1 安装软件 createrepo](#431-安装软件-createrepo)
-		- [4.4 配置仓库](#44-配置仓库)
-	- [5 作业](#5-作业)
+[TOC]
 
-<!-- /TOC -->
-## 1 源代码安装
+## 源代码安装
 
 * 优势 : 可定制
 * 缺点 : 操作复杂 , 编译时间长 , 极易出现错误
 
-### 1.1 源代码安装步骤
+### 源代码安装步骤
 
-* 1 ) 下载解压,阅读软件包附带的 install 文件和 readme 文件,获取软件的相关信息。
-* 2 ) 进入解包之后的目录,执行 “ ./configure” 命令,为编译做好关于本地环境的配置。
-* 3 ) 配置成功后,执行 “ make” 命令进行软件编译。
-* 4 ) 编译成功后,执行 “ make install” 命令完成安装。
-* 5 ) 最后,执行 “ make clean” 命令删除安装时产生的临时文件
+* 下载解压,阅读软件包附带的 install 文件和 readme 文件,获取软件的相关信息。
+* 进入解包之后的目录,执行 “ ./configure” 命令,为编译做好关于本地环境的配置。
+* 配置成功后,执行 “ make” 命令进行软件编译。
+* 编译成功后,执行 “ make install” 命令完成安装。
+* 最后,执行 “ make clean” 命令删除安装时产生的临时文件
 
-### 1.2 卸载步骤
+### 卸载步骤
 
 * 先进入软件的安装目录,然后执行卸载命令即可:`make uninstall`
 * 如果有的软件包不提供 uninstall 功能,则必须进行手动删除。因此你需要阅读安装目录里面的
@@ -38,42 +23,55 @@ readme 文件,或者在安装的过程中指定安装目录,即在 ./configure �
 prefix ,例如:`./configure--prefix=/usr/local/dir`
 * 该命令将把软件安装在 /usr/local/ 路径的 dir 目录里。通常情况下,大多数软件都默认安装在 /usr/local 目录里。
 
-### 1.3 实验
+### MPlayer源码安装实验
 
-1. /tmp/mplayer/
+>下载软件包到系统某个目录下，本次演示中使用/tmp/mplayer/目录，软件包包括主程序、库函数、皮肤
+
 ```shell
 wget ....
 all-20071007.tar.bz2	库函数
 Blue-1.7.tar.bz2	皮肤
 MPlayer-1.0rc2.tar.bz2	主程序
 ```
-2. 将压缩包解压
+
+>将压缩包解压
+
 ```shell
 tar -jxf
 ```
-3. 创建目录用来存放库函数
+
+>创建目录用来存放库函数
+
 `mkdir  /usr/local/lib/codes`
 
-4. 将/tmp/mplayer/all/目录下所有文件复制到/usr/local/lib/codes
+>将/tmp/mplayer/all/目录下所有文件复制到/usr/local/lib/codes
+
 ```shell
 cp all-20071007/* /usr/local/lib/codes
 ll /usr/local/lib/codes
 ```
-5. 安装依赖包
+
+>安装依赖包
+
 `yum install -y kernel-devel gcc  zlib-devel  gtk2-devel  `
 
-6. 检查安装环境
+>检查安装环境
+
 ```shell
 cd /tmp/mplayer/MPlayer-1.0rc2
 ./configure --enable-gui --codecsdir=/usr/local/lib/codes --enable-x11  --enable-xshape  --language=zh_CN --disable-ivtv --disable-png
 ```
-7. 编译make
+
+>编译make
+
 `make`
 
-8. 安装
+>安装
+
 `make install`
 
-9. 装皮肤
+>装皮肤
+
 ```shell
 这部分不是代码，而是程序装在了哪里
   Install prefix: /usr/local
@@ -85,11 +83,13 @@ cd /tmp/mplayer/MPlayer-1.0rc2
 * 将皮肤文件复制到/usr/local/share/mplayer/default/目录中
 `cp /tmp/mplayer/Blue/* /usr/local/share/mplayer/skins/default/`
 
-10. 从真机桌面用鼠标双击打开图形化界面的rhel6，去测试，是否安装成功。
+>从真机桌面用鼠标双击打开图形化界面的rhel6，去测试，是否安装成功。
+
 `applications--->sound&video---->mplayer`
+
 ---
 
-## 2 二进制安装
+## 二进制安装
 
 直接解压缩即可使用
 
@@ -106,7 +106,7 @@ vim conf/server.xml
 bin/mycat start
 ```
 
-## 3 RPM
+## RPM
 
 RPM : redhat package management
 
@@ -163,14 +163,14 @@ update 升级
 ```
 
 
-## 4 YUM
+## YUM
 
-### 4.1 yum 的作用
+### yum 的作用
 
 作用 : 为了解决包之间的依赖关系而存在的一种管理机制 , 基于 rpm 为前端的包管理机制 .
 为了解决依赖关系 , 引入了一种仓库的机制 .
 
-### 4.2 yum 仓库
+### yum 仓库
 
 仓库 : 用来存放软件和软件之间的依赖关系 , 当我们需要安装软件的时候 , 就可以通过该依赖关系 , 来将相应
 的依赖包都装上 .repodata 目录就是 yum 的仓库 , 存放软件和软件之间的依赖关系数据 .
@@ -182,11 +182,11 @@ dr-xr-xr-x. 2 root root 4096 Nov 12
 /mnt/rhel6.5/x86_64/dvd
 ```
 
-### 4.3 依赖关系
+### 依赖关系
 安装系统的光盘中已经有建号的依赖关系了,即 repodata/ 目录,如果要自己手动制作 rpm 包依赖关系
 目录,该怎么做呢?
 
-#### 4.3.1 安装软件 createrepo
+#### 安装软件 createrepo
 
 rhel7 默认已经安装
 ```shell
@@ -260,7 +260,7 @@ drwxr-xr-x. 2 root root
 4096 Mar 18 07:42 repodata
 ```
 
-### 4.4 配置仓库
+### 配置仓库
 
 为此 , 我们需要优先去配置一个仓库指向文件 .
 这个文件的位置在 /etc/yum.repos.d/ 目录下 , 以 .repo 结尾
@@ -331,7 +331,7 @@ gpgcheck=0
 不要使用 yum 去卸载 , 会将软件的依赖关系一并卸载掉 .
 
 
-## 5 作业
+## Linux 软件安装课后作业
 
 
 1. 配置一个 yum 仓库。熟悉一下配置的几个字段内容。
