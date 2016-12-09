@@ -1,47 +1,10 @@
 # Linux文件系统和磁盘管理
-<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
-- [Linux文件系统和磁盘管理](#linux文件系统和磁盘管理)
-	- [1 文件系统](#1-文件系统)
-		- [1.1 资源虚拟化](#11-资源虚拟化)
-		- [1.2 文件系统的概念](#12-文件系统的概念)
-		- [1.3 文件系统的类型](#13-文件系统的类型)
-		- [1.4 文件系统的结构](#14-文件系统的结构)
-		- [1.5 文件系统的区别](#15-文件系统的区别)
-		- [1.6 文件系统的简单操作](#16-文件系统的简单操作)
-			- [1.6.1 df](#161-df)
-			- [1.6.2 du](#162-du)
-	- [2 磁盘的分割、格式化与挂载](#2-磁盘的分割格式化与挂载)
-		- [2.1 分割 fdisk](#21-分割-fdisk)
-		- [2.2 磁盘格式化 mkfs](#22-磁盘格式化-mkfs)
-		- [2.3 挂载](#23-挂载)
-			- [2.3.1 mount 的用法](#231-mount-的用法)
-			- [2.3.2 mount 的查看](#232-mount-的查看)
-			- [2.4.3 uount](#243-uount)
-		- [2.5 /etc/fstab 将永久生效](#25-etcfstab-将永久生效)
-	- [3 磁盘配额 Quota](#3-磁盘配额-quota)
-		- [3.1 作用和分类](#31-作用和分类)
-		- [3.2 相关命令](#32-相关命令)
-			- [3.2.1 quotacheck](#321-quotacheck)
-			- [3.2.2 quota](#322-quota)
-			- [3.2.3 quotaon](#323-quotaon)
-			- [3.2.4 repquota](#324-repquota)
-			- [3.2.5 edquota](#325-edquota)
-			- [3.2.6 xfs_quota](#326-xfsquota)
-		- [3.3 实验](#33-实验)
-			- [3.3.1 rhel6 quota实验](#331-rhel6-quota实验)
-			- [3.3.2 rhel7 quota实验](#332-rhel7-quota实验)
-	- [4 逻辑卷管理 LVM](#4-逻辑卷管理-lvm)
-		- [4.1 作用](#41-作用)
-		- [4.2 原理](#42-原理)
-		- [4.3 步骤](#43-步骤)
-		- [4.4 实验](#44-实验)
-	- [5 Linux文件系统和磁盘管理作业](#5-linux文件系统和磁盘管理作业)
+[TOC]
 
-<!-- /TOC -->
-## 1 文件系统
+## 文件系统
 
-### 1.1 资源虚拟化
+### 资源虚拟化
 
 ![20](pic/20.png)
 
@@ -54,7 +17,7 @@ Linux操作系统内核由6个部分组成：
 * 用来实现资源抽象
 * 资源分配和资源共享等功能。
 
-### 1.2 文件系统的概念
+### 文件系统的概念
 
 操作系统中负责管理和存储文件信息的软件机构称为文件管理系统，简称文件系统。
 
@@ -62,7 +25,7 @@ Linux操作系统内核由6个部分组成：
 
 具体地说，它负责为用户建立文件，存入、读出、修改、转储文件，控制文件的存取，当用户不再使用时撤销文件等。
 
-### 1.3 文件系统的类型
+### 文件系统的类型
 
 查看系统支持的文件系统
 `ls /lib/modules/$(uname -r)/kernel/fs `
@@ -70,7 +33,7 @@ Linux操作系统内核由6个部分组成：
 系统目前已加载到内存中支持的文件系统
 `more /proc/filesystems`
 
-### 1.4 文件系统的结构
+### 文件系统的结构
 
 索引式文件系统(indexed allocation)
 
@@ -81,7 +44,7 @@ Linux操作系统内核由6个部分组成：
 * inode:记录文件属性,一个文件占一个inode,同时记录该文件数据所在的block 号码;
 * block:实际记录文件的内容,若档案太大时,会占用多个 block
 
-### 1.5 文件系统的区别
+### 文件系统的区别
 
 rhel6
 ```shell
@@ -100,11 +63,11 @@ EXT4 Linux kernel 自 2.6.28 开始正式支持新的文件系统 Ext4。Ext4 �
 
 XFS 针对海量小文件的存储及超大文件的存储有一些有时,但 EXT 系统相对稳定。XFS 是 Silicon Graphics，Inc. 于 90 年代初开发的文件系统。它至今仍作为 SGI 基于 IRIX 的产品（从工作站到超级计算机）的底层文件系统来使用。现在，XFS 也可以用于 Linux。XFS 的 Linux 版的到来是激动人心的，首先因为它为 Linux 社区提供了一种健壮的、优秀的以及功能丰富的文件系统，并且这种文件系统所具有的可伸缩性能够满足最苛刻的存储需求。
 
-### 1.6 文件系统的简单操作
+### 文件系统的简单操作
 
 ![22](pic/22.png)
 
-#### 1.6.1 df
+#### df
 
 ![23](pic/23.png)
 
@@ -133,7 +96,7 @@ tmpfs                            510368      72    510296   1% /dev/shm
 none                                  0       0         0    - /proc/sys/fs/binfmt_misc
 ```
 
-#### 1.6.2 du
+#### du
 
 ![24](pic/24.png)
 
@@ -186,7 +149,7 @@ none                                  0       0         0    - /proc/sys/fs/binf
 48K	/tmp
 ```
 
-## 2 磁盘的分割、格式化与挂载
+## 磁盘的分割、格式化与挂载
 
 新增一颗硬盘时 , 该怎么做 :
 1. 对磁盘进行分割 , 以建立可用的分区 partition ; <fdisk>
@@ -195,7 +158,7 @@ none                                  0       0         0    - /proc/sys/fs/binf
 4. 在 Linux 系统上 , 需要建立挂载点 ( 目录 ), 并将他挂载上来。 <mount>
 5. 如果 ll /dev/ 新建的分区不存在,则使用 partx -a /dev/vdb 让新建的分区被读取生效,或者重启电脑
 
-### 2.1 分割 fdisk
+### 分割 fdisk
 
 fdisk命令用于观察硬盘实体使用情况，也可对硬盘分区。它采用传统的问答式界面。
 
@@ -374,7 +337,7 @@ Calling ioctl() to re-read partition table.
 Syncing disks.
 ```
 
-### 2.2 磁盘格式化 mkfs
+### 磁盘格式化 mkfs
 
 ![25](pic/25.png)
 
@@ -423,7 +386,7 @@ realtime =none                   extsz=4096   blocks=0, rtextents=0
 ```
 
 
-### 2.3 挂载
+### 挂载
 
 /etc/fstab
 
@@ -431,7 +394,7 @@ realtime =none                   extsz=4096   blocks=0, rtextents=0
 
 /proc/filesystems:Linux 系统已经加载的文件系统类型。
 
-#### 2.3.1 mount 的用法
+#### mount 的用法
 
 1) 标准用法 `mount -t ext4 /dev/vdb1 /mnt/vdb1 `
 
@@ -463,7 +426,7 @@ D.-t iso9660 挂载CD/DVD
 * 用法: mount -t iso9660 被挂载的设备 挂载点
 * 例如: mount -t iso9660 /dev/dvdrom /media/dvdrom
 
-#### 2.3.2 mount 的查看
+#### mount 的查看
 
 df -h
 
@@ -480,7 +443,7 @@ tmpfs on /dev/shm type tmpfs (rw,rootcontext="system_u:object_r:tmpfs_t:s0")
 none on /proc/sys/fs/binfmt_misc type binfmt_misc (rw)
 ```
 
-#### 2.4.3 uount
+#### uount
 
 umount [-fn] 设备文件名与挂载点
 
@@ -492,7 +455,7 @@ umount /mnt
 3. 尽量不要在挂载点里执行 mount 挂载命令
 4. mount 命令为临时生效
 
-### 2.5 /etc/fstab 将永久生效
+### /etc/fstab 将永久生效
 
 ![26](pic/26.png)
 
@@ -500,20 +463,20 @@ umount /mnt
 
 修改后保存,通过 `mount -a `让配置生效
 
-## 3 磁盘配额 Quota
+## 磁盘配额 Quota
 
 如前面介绍章节讲到的类 Unix 系统最初设计理念就让许多人一起使用,多任务的操作系统,但是硬件的资源是固定有限 的,如果出现个小破坏份子不断的创建文件或下载电影,那么硬盘空间总有一天会被占满的吧,这时就需要 quota服务 帮助我们为每个用户限制可以使用的硬盘空间,一旦超出预算就不再允许他们使用。
 
-### 3.1 作用和分类
+### 作用和分类
 
 quota 的磁盘配额可以限制用户的硬盘可用空间或最大创建文件数量,并且还有软/硬限制的区别:
 
 * 软限制:当达到软限制时会提示用户,但允许用户在规定期限内继续使用。
 * 硬限制:当达到硬限制时会提示用户,且强制终止用户的操作。
 
-### 3.2 相关命令
+### 相关命令
 
-#### 3.2.1 quotacheck
+#### quotacheck
 
 quotacheck命令通过扫描指定的文件系统，获取磁盘的使用情况，创建、检查和修复磁盘配额（quota）文件。执行quotacheck指令，扫描挂入系统的分区，并在各分区的文件系统根目录下产生quota.user和quota.group文件，设置用户和群组的磁盘空间限制。
 
@@ -529,7 +492,7 @@ quotacheck命令通过扫描指定的文件系统，获取磁盘的使用情况�
 
 参数 文件系统：指定要扫描的文件系统。
 
-#### 3.2.2 quota
+#### quota
 
 quota命令用于显示用户或者工作组的磁盘配额信息。输出信息包括磁盘使用和配额限制。
 
@@ -544,7 +507,7 @@ quota命令用于显示用户或者工作组的磁盘配额信息。输出信息
 
 参数 用户或者工作组：指定要显示的用户或者工作组。
 
-#### 3.2.3 quotaon
+#### quotaon
 
 quotaon命令用于激活Linux内核中指定文件系统的磁盘配额功能。
 
@@ -558,7 +521,7 @@ quotaon命令用于激活Linux内核中指定文件系统的磁盘配额功能�
 
 参数 文件系统：指定要激活磁盘配额功能的文件系统。
 
-#### 3.2.4 repquota
+#### repquota
 
 repquota命令以报表的格式输出指定分区，或者文件系统的磁盘配额信息。
 
@@ -572,7 +535,7 @@ repquota命令以报表的格式输出指定分区，或者文件系统的磁盘
 
 参数 文件系统：要打印报表的文件系统或者对应的设备文件名。
 
-#### 3.2.5 edquota
+#### edquota
 
 edquota 命令用于超级用户编辑其他用户的 quota 配额限制
 
@@ -584,7 +547,7 @@ edquota 命令用于超级用户编辑其他用户的 quota 配额限制
 * -r 通过 RPC 协议编辑远程的配额。
 
 
-#### 3.2.6 xfs_quota
+#### xfs_quota
 
 xfs_quota 命令用于管理 XFS 文件系统的 quota 硬盘配额
 
@@ -595,9 +558,9 @@ xfs_quota 命令用于管理 XFS 文件系统的 quota 硬盘配额
 * -p 设置提示或报错信息的程序名称,默认为 xfs_quota。
 * -x 专家模式,能够对 quota 做更多复杂的配置。
 
-### 3.3 实验
+### 实验
 
-#### 3.3.1 rhel6 quota实验
+#### rhel6 quota实验
 
 划分分区/dev/vdb2，格式化成ext4文件系统，并挂载在student家目录下使用，限制磁盘软限制为 3M、磁盘硬限制为 6M、文件软限制为 20 个且文件硬限制为 30 个
 1. 挂载时需要加上 -o usrquota,grpquota 选项 ：mount -o usrquota,grpquota /dev/vdb2 /home/student
@@ -674,7 +637,7 @@ touch: cannot touch `file9': Disk quota exceeded
 touch: cannot touch `file10': Disk quota exceeded
 ```
 
-#### 3.3.2 rhel7 quota实验
+#### rhel7 quota实验
 
 root用户：
 1. 查看内核是否支持 quota 功能: dmesg | grep quota
@@ -775,16 +738,17 @@ Last login: Fri Jul  1 02:58:22 EDT 2016 on pts/0
 logout
 ```
 
-## 4 逻辑卷管理 LVM
+## 逻辑卷管理 LVM
 
 逻辑卷管理 (Logical Volume Manager)
 
-### 4.1 作用
+### 作用
 
 当用户根据实际情况需要对分区增加、减小等调整时,经常会受到硬盘 “ 灵活性 ” 的限制,很不方便。
+
 逻辑卷管理器则是在磁盘分区与文件系统之间添加的逻辑层,提供一个抽象的卷组,使得管理者可以忽略底层磁盘布局, 从而实现对分区的灵活动态调整,这毫不夸张,所以红帽 RHEL7 系统已经默认启用了 LVM(Logical Volume Manager) 机制。
 
-### 4.2 原理
+### 原理
 
 ![00](pic/00.png)
 
@@ -795,17 +759,16 @@ logout
 * 逻辑卷(LV,Logical Volume ):从卷组(VG)出切割出的空间来用于创建文件系统,大小由 PE 的个数决定。
 
 
-### 4.3 步骤
+### 步骤
 
 ![27](pic/27.png)
 ![28](pic/28.png)
 ![30](pic/30.png)
 ![31](pic/31.png)
 
-### 4.4 实验
+### 实验
 
-实验：linear 目前用户的映射目标为linear型，线性型，/dev/vdb1 pv1 100M;/dev/vdb2 pv2 100M;/dev/vdb3 pv 3 100M----->myvg 300M----->lv1-linear 20M;lv2-linear 60M
-现在lv1-linear不够用了，需要拓展60M的空间，lv2-linear也不够用了，需要拓展30M的空间，如何做才能提高读写速度？
+实验：linear 目前用户的映射目标为linear型，线性型，/dev/vdb1 pv1 100M;/dev/vdb2 pv2 100M;/dev/vdb3 pv 3 100M----->myvg 300M----->lv1-linear 20M;lv2-linear 60M现在lv1-linear不够用了，需要拓展60M的空间，lv2-linear也不够用了，需要拓展30M的空间，如何做才能提高读写速度？
 
 ![32](pic/32.png)
 
@@ -860,7 +823,7 @@ myvg-lv2--linear: 122880 65536 linear 252:25 288768
 ```
 
 
-## 5 Linux文件系统和磁盘管理作业
+## Linux文件系统和磁盘管理作业
 
 1. 分别在rhel6和rhel7上划分/dev/vdb磁盘，要求，/dev/vdb1大小为1G，/dev/vdb2大小为2G；创建对应操作系统默认的文件系统，rhel6默认ext4，rhel7默认xfs。
 2. rhel6上将/dev/vdb2挂载在student家目录下使用，限制磁盘软限制为 3M、磁盘硬限制为 6M、文件软限制为 20 个且文件硬限制为 30 个

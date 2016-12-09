@@ -1,22 +1,12 @@
 # SELINUX
 
+[TOC]
 
-- [SELINUX](#selinux)
-	- [1 SELinux](#1-selinux)
-		- [1.1 作用](#11-作用)
-		- [1.2 配置文件](#12-配置文件)
-		- [1.3 相关指令](#13-相关指令)
-		- [1.4 操作限制的实现方法](#14-操作限制的实现方法)
-		- [1.5.1 setroubleshot](#151-setroubleshot)
-			- [1.5.2 auditd](#152-auditd)
-		- [1.6 selinux-policy-devel](#16-selinux-policy-devel)
-
-
-## 1 SELinux
+## SELinux
 
 Security Enhanced Linux 安全强化的 Linux
 
-### 1.1 作用
+### 作用
 
 强制限制某些操作 , 属于权限的一种
 
@@ -24,7 +14,7 @@ Security Enhanced Linux 安全强化的 Linux
 
 u\g\o r\w\x ssid\sgid\stid acl attr
 
-### 1.2 配置文件
+### 配置文件
 
 /etc/selinux/config
 
@@ -49,7 +39,7 @@ SELINUXTYPE=targeted
 
 重启电脑后生效 , 并永久生效
 
-### 1.3 相关指令
+### 相关指令
 
 * 查看当前 selinux 状态的命令 : getenforce/sestatus
 * 设置 selinux 状态 ( 临时生效 ): setenforce [ Enforcing | Permissive | 1 | 0 ]
@@ -121,7 +111,7 @@ libselinux-utils-2.2.2-6.el7.x86_64
 /usr/sbin/setsebool
 ```
 
-### 1.4 操作限制的实现方法
+### 操作限制的实现方法
 
 1. 通过 bool 值来进行操作的限制
 * 1>getsebool -a <== 显示主机中所有的布尔值
@@ -153,7 +143,7 @@ Identify:role:type
 
 
 
-### 1.5.1 setroubleshot
+###.1 setroubleshot
 
 ```shell
 [#40#root@rhel6 ~]#yum install -y setroubleshoot
@@ -167,15 +157,14 @@ Identify:role:type
 /usr/bin/sealert
 ```
 
-setroubleshot 将 selinux 相关的错误信息和解决方法记录在 /var/log/messages 日志中。
-`cat /var/log/messages | grep setroubleshoot`
+setroubleshot 将 selinux 相关的错误信息和解决方法记录在 /var/log/messages 日志中。`cat /var/log/messages | grep setroubleshoot`
 
-#### 1.5.2 auditd
+#### auditd
 
 * auditd --> 将 selinux 相关的信息记录在 /var/log/audit/audit.log 日志中,非常详细。
 * sealert -a /var/log/audit/audit.log
 
-### 1.6 selinux-policy-devel
+### selinux-policy-devel
 
 el6 上没有该软件
 ```shell
@@ -186,5 +175,4 @@ selinux-policy-devel.noarch 3.12.1-153.el7 server
 This system is not registered to Red Hat Subscription Management. You can use subscription-manager
 to register.
 ```
-`man` 关键词 `_selinux` 查找和关键字相关的 `selinux` 限制具体内容 , 包括什么打开什么布尔值 , 需要
-设置怎样 的安全上下文。
+`man` 关键词 `_selinux` 查找和关键字相关的 `selinux` 限制具体内容 , 包括什么打开什么布尔值 , 需要设置怎样的安全上下文。

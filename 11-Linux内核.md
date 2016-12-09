@@ -1,31 +1,8 @@
 # Linux内核
 
+[TOC]
 
-- [Linux内核](#linux内核)
-	- [1.1 WHERE](#11-where)
-		- [1.2 WHAT](#12-what)
-		- [2.1 moudules.dep 文件](#21-moudulesdep-文件)
-		- [2.2 depmod 命令](#22-depmod-命令)
-		- [2.3 depmod 实验](#23-depmod-实验)
-		- [3.1 lsmod 命令](#31-lsmod-命令)
-		- [3.2 modinfo 命令](#32-modinfo-命令)
-		- [3.3 内核模块的观察实验](#33-内核模块的观察实验)
-	- [4 内核模块的加载与移除:insmod, modprobe, rmmod](#4-内核模块的加载与移除insmod-modprobe-rmmod)
-		- [4.1 insmod 命令](#41-insmod-命令)
-		- [4.2 modprobe 命令](#42-modprobe-命令)
-		- [4.3 rmmod 命令](#43-rmmod-命令)
-		- [4.4 内核模块的加载与移除实验](#44-内核模块的加载与移除实验)
-	- [5 内核模块的额外参数设定:/etc/modprobe.d/*.conf](#5-内核模块的额外参数设定etcmodprobedconf)
-	- [6 内核升级](#6-内核升级)
-		- [6.1 源码编译](#61-源码编译)
-		- [6.2 rpm 包安装](#62-rpm-包安装)
-			- [6.2.1 rhel6.5 内核升级 —— yum 方式(有网)](#621-rhel65-内核升级-yum-方式有网)
-			- [6.2.2 rhel7.2 内核升级 —— 本地 rpm 安装(没网)](#622-rhel72-内核升级-本地-rpm-安装没网)
-	- [7 Linux 内核作业](#7-linux-内核作业)
-
-
-
-## 1.1 WHERE
+## WHERE
 
 内核与内核模块在哪里呢?内核模块都有哪些呢?下面的表中都列出来了:
 
@@ -33,7 +10,7 @@
 * 内核解压缩所需 RAM Disk /boot/initrd-version
 * 内核模块 /lib/modules/$(uname -r)/kernel
 
-### 1.2 WHAT
+### WHAT
 
 开机时,内核第一任务就是驱动硬件,激活机器。相关的驱动模块放在 `/lib/modules/$(uname -r)/` 目录下,下面以 rhel6 为例,看看该目录下都有些什么:
 
@@ -122,7 +99,7 @@ ppp_synctty.ko tehuti.ko
 * net 与网络有关的各项协议数据,还有防火墙模块
 * sound 音效有关的各项模块2 内核模块的相依性: depmod
 
-### 2.1 moudules.dep 文件
+### moudules.dep 文件
 
 ```shell
 [root@rhel6 etc]# head /lib/modules/$(uname -r)/modules.dep
@@ -141,20 +118,17 @@ kernel/arch/x86/kernel/test_nx.ko:
 kernel/arch/x86/kernel/microcode.ko:
 ```
 
-### 2.2 depmod 命令
+### depmod 命令
 
 depmod [-Ane]
 
 选项与参数 :
 
-* -A : 不加任何参数时 , depmod 会主动的去分析目前内核的模块 , 并且重新写入
-/lib/modules/$(uname -r)/modules.dep 当中。
-更新。
-若加入 -A 参数时 , 则 depmod 会去搜寻比 modules.dep 内还要新的模块,若找到新模块则
+* -A : 不加任何参数时 , depmod 会主动的去分析目前内核的模块 , 并且重新写入`/lib/modules/$(uname -r)/modules.dep` 当中更新。若加入 -A 参数时 , 则 depmod 会去搜寻比 modules.dep 内还要新的模块,若找到新模块则
 * -n : 不写入 modules.dep , 而是将结果输出到屏幕上 (standard out);
 * -e : 显示出目前已加载的不可执行的模块名称
 
-### 2.3 depmod 实验
+### depmod 实验
 
 假设已经做好一个网卡驱动程序 , 档名为 a.ko, 请更新内核的相依性。
 
@@ -164,14 +138,14 @@ depmod [-Ane]
 [root@rhel6 ~]# depmod3 内核模块的观察: lsmod, modinfo
 ```
 
-### 3.1 lsmod 命令
+### lsmod 命令
 
 作用:显示出目前已经存在于内核当中的模块 , 显示的内容包括 :
 1. 模块名称 (Module);
 2. 模块的大小 (size);
 3. 此模块是否被其他模块所使用 (Used by) 。
 
-### 3.2 modinfo 命令
+### modinfo 命令
 
 用法:
 
@@ -184,7 +158,7 @@ modinfo [-adln] [module_name|filename]
 * -l : 仅列出授权 (license);
 * -n : 仅列出该模块的详细路径。
 
-### 3.3 内核模块的观察实验
+### 内核模块的观察实验
 
 首先查看目前已存在于内核中的模块,随便选择一个模块并查看该模块的详细信息。
 
@@ -209,18 +183,16 @@ vermagic:
 2.6.32-431.el6.x86_64 SMP mod_unload modversions
 ```
 
-## 4 内核模块的加载与移除:insmod, modprobe, rmmod
+## 内核模块的加载与移除:insmod, modprobe, rmmod
 
 
-modprobe 加载模块会主动去搜寻 modules.dep 的内容 , 先解决模块的相依性后 , 再决定需要加载
-的模块有哪些,很方便; insmod 则完全由使用者自行加载一个完整文件名的模块 , 不会主动分析模块相
-依性
+modprobe 加载模块会主动去搜寻 modules.dep 的内容 , 先解决模块的相依性后 , 再决定需要加载的模块有哪些,很方便; insmod 则完全由使用者自行加载一个完整文件名的模块 , 不会主动分析模块相依性
 
-### 4.1 insmod 命令
+### insmod 命令
 
 insmod [/full/path/module_name] [parameters]
 
-### 4.2 modprobe 命令
+### modprobe 命令
 
 modprobe [-lcfr] module_name
 
@@ -231,7 +203,7 @@ modprobe [-lcfr] module_name
 * -r : 类似 rmmod , 移除某个模块
 
 
-### 4.3 rmmod 命令
+### rmmod 命令
 
 rmmod [-fw] module_name
 
@@ -240,7 +212,7 @@ rmmod [-fw] module_name
 * -w : 若该模块正被使用 , 则等该模块被使用完毕后 , 再移除
 
 
-### 4.4 内核模块的加载与移除实验
+### 内核模块的加载与移除实验
 
 加载模块;查看该模块是否已成功加载,并查看详细信息;移除该模块。
 
@@ -265,7 +237,7 @@ dnet
 [root@rhel6 net]# lsmod | grep dnet
 ```
 
-## 5 内核模块的额外参数设定:/etc/modprobe.d/*.conf
+## 内核模块的额外参数设定:/etc/modprobe.d/*.conf
 
 ```shell
 [root@rhel6 ~]# ls /etc/modprobe.d/
@@ -306,9 +278,9 @@ alias block-major-46-* pcd
 alias block-major-47-* pf
 ```
 
-## 6 内核升级
+## 内核升级
 
-### 6.1 源码编译
+### 源码编译
 
 Linux 内核官网 https://www.kernel.org/ 提供的是源码,需要编译使用。
 
@@ -319,21 +291,19 @@ Linux 内核版本有两种 : 稳定版和开发版 ,Linux 内核版本号由 3 
 * x: 次版本号 , 偶数表示稳定版本 ; 奇数表示开发中版本。
 * y: 修订版本号 , 表示修改的次数
 
-去 http://www.kernel.org 首页 , 可以看到有 stable, longterm 等版本 ,longterm 是比
-stable 更稳定的版本 , 会长时间更新。
+去 http://www.kernel.org 首页 , 可以看到有 stable, longterm 等版本 ,longterm 是比stable 更稳定的版本 , 会长时间更新。
 
 源码编译不做要求。
 
-### 6.2 rpm 包安装
+### rpm 包安装
 
-在工作中应该去操作系统的发行公司的官网下载已经编译好的内核。我们使用的是红帽的,那么就去红帽的
-官网 https://www.redhat.com/en/global/china
+在工作中应该去操作系统的发行公司的官网下载已经编译好的内核。我们使用的是红帽的,那么就去红帽的官网 https://www.redhat.com/en/global/china
 
 这里使用一个免费的源 ELRepo 源
 
 ![45](pic/45.png)
 
-#### 6.2.1 rhel6.5 内核升级 —— yum 方式(有网)
+#### rhel6.5 内核升级 —— yum 方式(有网)
 
 在 yum 的 ELRepo 源中 , 选择 kernel-lt-3.10.102-1.el6.elrepo.x86_64.rpm 这个版
 本。
@@ -349,7 +319,7 @@ stable 更稳定的版本 , 会长时间更新。
 3.10.102-1.el6.elrepo.x86_64
 ```
 
-#### 6.2.2 rhel7.2 内核升级 —— 本地 rpm 安装(没网)
+#### rhel7.2 内核升级 —— 本地 rpm 安装(没网)
 
 此处是在 http://rpm.pbone.net 上下载的,实际工作中应该到红帽官网下载。
 
@@ -452,7 +422,7 @@ done
 3.10.102-1.el6.elrepo.x86_64
 ```
 
-## 7 Linux 内核作业
+## Linux 内核作业
 1. 到共享当中下载 linux 内核 kernel-lt-3.10.102-1.el6.elrepo.x86_64.rpm
 2. rhel6.5 进行内核升级,保留原内核
 3. rhel7.2 进行内核升级,保留原内核
