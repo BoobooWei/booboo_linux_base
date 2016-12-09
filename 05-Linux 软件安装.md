@@ -18,9 +18,7 @@
 ### 卸载步骤
 
 * 先进入软件的安装目录,然后执行卸载命令即可:`make uninstall`
-* 如果有的软件包不提供 uninstall 功能,则必须进行手动删除。因此你需要阅读安装目录里面的
-readme 文件,或者在安装的过程中指定安装目录,即在 ./configure 命令后面添加参数 --
-prefix ,例如:`./configure--prefix=/usr/local/dir`
+* 如果有的软件包不提供 uninstall 功能,则必须进行手动删除。因此你需要阅读安装目录里面的readme 文件,或者在安装的过程中指定安装目录,即在 ./configure 命令后面添加参数 --prefix ,例如:`./configure--prefix=/usr/local/dir`
 * 该命令将把软件安装在 /usr/local/ 路径的 dir 目录里。通常情况下,大多数软件都默认安装在 /usr/local 目录里。
 
 ### MPlayer源码安装实验
@@ -110,9 +108,7 @@ bin/mycat start
 
 RPM : redhat package management
 
-rpm 命令是 RPM 软件包的管理工具。 rpm 原本是 Red Hat Linux 发行版专门用来管理 Linux 各项套
-件的程序,由于它遵循 GPL 规则且功能强大方便,因而广受欢迎。逐渐受到其他发行版的采用。 RPM 套件
-管理方式的出现,让 Linux 易于安装,升级,间接提升了 Linux 的适用度。
+rpm 命令是 RPM 软件包的管理工具。 rpm 原本是 Red Hat Linux 发行版专门用来管理 Linux 各项套件的程序,由于它遵循 GPL 规则且功能强大方便,因而广受欢迎。逐渐受到其他发行版的采用。 RPM 套件管理方式的出现,让 Linux 易于安装,升级,间接提升了 Linux 的适用度。
 
 rpm 的命名规范 : 软件名 - 版本号 - 操作系统平台
 
@@ -172,8 +168,7 @@ update 升级
 
 ### yum 仓库
 
-仓库 : 用来存放软件和软件之间的依赖关系 , 当我们需要安装软件的时候 , 就可以通过该依赖关系 , 来将相应
-的依赖包都装上 .repodata 目录就是 yum 的仓库 , 存放软件和软件之间的依赖关系数据 .
+仓库 : 用来存放软件和软件之间的依赖关系 , 当我们需要安装软件的时候 , 就可以通过该依赖关系 , 来将相应的依赖包都装上 .repodata 目录就是 yum 的仓库 , 存放软件和软件之间的依赖关系数据 .
 
 ```shell
 [root@rhel6 dvd]# ll repodata/ -d
@@ -183,8 +178,8 @@ dr-xr-xr-x. 2 root root 4096 Nov 12
 ```
 
 ### 依赖关系
-安装系统的光盘中已经有建号的依赖关系了,即 repodata/ 目录,如果要自己手动制作 rpm 包依赖关系
-目录,该怎么做呢?
+
+安装系统的光盘中已经有建号的依赖关系了,即 repodata/ 目录,如果要自己手动制作 rpm 包依赖关系目录,该怎么做呢?
 
 #### 安装软件 createrepo
 
@@ -262,8 +257,7 @@ drwxr-xr-x. 2 root root
 
 ### 配置仓库
 
-为此 , 我们需要优先去配置一个仓库指向文件 .
-这个文件的位置在 /etc/yum.repos.d/ 目录下 , 以 .repo 结尾
+为此 , 我们需要优先去配置一个仓库指向文件。这个文件的位置在 /etc/yum.repos.d/ 目录下 , 以 .repo 结尾
 
 ```shell
 [root@rhel7 tmp]# cd /etc/yum.repos.d/
