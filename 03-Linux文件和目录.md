@@ -476,6 +476,8 @@ link: cannot create link ‘file1h’ to ‘file1’: Operation not permitted
 [root@rhel7 tmp]# chattr -i file1
 [root@rhel7 tmp]# lsattr file1
 ---------------- file1
+```
+
 
 ### ACL 权限命令
 
@@ -490,7 +492,9 @@ ACL 可以针对单一用户 , 单一文件 , 单一目录 r,w,x 的权限规范
 2. 群组 (group): 针对群组为对象设定权限
 3. 默认属性 (mask): 还可以针对在该目录下在建立新档案或目录时 , 规范新数据的默认权限
 
+
 #### getfacl
+
 
 取得文件 / 目录的 ACL 设定内容
 
