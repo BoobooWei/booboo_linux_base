@@ -117,7 +117,7 @@ libselinux-utils-2.2.2-6.el7.x86_64
 * 1>getsebool -a <== 显示主机中所有的布尔值
 * 2>setsebool [-PV] boolean value | bool1=val1 bool2=val2 ...
 
-2. 通过安全上下文
+1. 通过安全上下文
 ```shell
 [#19#root@rhel6 ~]#ls -Z
 -rw-------. root root system_u:object_r:admin_home_t:s0 anaconda-ks.cfg
@@ -143,7 +143,7 @@ Identify:role:type
 
 
 
-###.1 setroubleshot
+###setroubleshot
 
 ```shell
 [#40#root@rhel6 ~]#yum install -y setroubleshoot
