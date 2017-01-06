@@ -339,10 +339,10 @@ umask 创建文件 / 目录的默认权限
 
 最大权限 -umask= 默认权限
 
-- user 文件 666 -022 = 644 rw-r--r--
-- root 文件 666 -002 = 664 rw-rw-r--
-- user 目录 777 -022 = 755 rwxr-xr-x
-- root 目录 777 -002 = 775 rwxrwxr-x
+- user 文件 666 -002 = 644 rw-rw-r--
+- root 文件 666 -022 = 664 rw-r--r--
+- user 目录 777 -002 = 755 rwxrwxr-x
+- root 目录 777 -022 = 775 rwxr-xr-x
 
 umask 777 只针对当前环境临时生效
 
@@ -503,7 +503,7 @@ setfacl [-bkRd] [{-m|-x} acl 参数 ] 目标文件名
 
 命令格式 :
 
-```shell
+​```shell
 『 u:[ 使用者账号列表 ]:[ rwx] 』 <= = 针对特定用户
 『 g:[ 群组列表 ]:[rwx] 』 <= = 针对特定用户组
 『 m:[ rwx] 』 <= = 针对有效权限 mask
@@ -624,7 +624,7 @@ this is a
 
 ## 指令和文件的搜索
 
-which whereis locate find /var/lib/mlocate/mlocate.db
+which 	whereis	 	locate	 find 
 
 ### 肉眼查找 : ls -R
 
@@ -697,7 +697,7 @@ locate [ -ir] keyword
 * `locate` 寻找的数据是由『已建立的数据库 `/var/lib/mlocate/mlocate.db` 里面的数据所搜
   寻到 , 所以不用直接在去硬盘中存取数据 , 速度快
 * `updatedb`: 根据 `/etc/updatedb.conf` 的设定去搜寻系统硬盘内的文件名 , 并更新`/var/lib/mlocate.mlocate.db`
-* `PRUNEPATHS = "/afs /media /net /sfs /tmp /udev /var/cache/ccache /var/spool/cups /var/spool/squid /var/tmp"` <== 设定了搜寻的目录
+* `PRUNEPATHS = "/afs /media /net /sfs /tmp /udev /var/cache/ccache /var/spool/cups /var/spool/squid /var/tmp"` <== 设定了不搜寻的目录
 
 #### find
 
@@ -775,6 +775,8 @@ then
 
 `find / -perm +7000 -exec ls -l {} \;`
 <= = 固定格式 : `find [ 路径 参数 ] -exec [ 命令 ] {} \;`
+
+-ok		格式同-exec，区别ok会带提示（交互式的找到后是否执行该命令）
 
 -print: 将结果输出屏幕上 , 预设动作
 

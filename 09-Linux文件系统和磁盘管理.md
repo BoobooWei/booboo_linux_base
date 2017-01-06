@@ -419,7 +419,7 @@ C.-o remount 重新挂载
 * 用法: mount -o remount 被挂载的设备 挂载点
 * 例如: mount -o remount,rw,auto / <== 重新挂载根目录
 
-	mount -o remount,ro newdir <== 重新挂载为只读
+  mount -o remount,ro newdir <== 重新挂载为只读
 
 D.-t iso9660 挂载CD/DVD
 
@@ -443,7 +443,7 @@ tmpfs on /dev/shm type tmpfs (rw,rootcontext="system_u:object_r:tmpfs_t:s0")
 none on /proc/sys/fs/binfmt_misc type binfmt_misc (rw)
 ```
 
-#### uount
+#### umount
 
 umount [-fn] 设备文件名与挂载点
 
@@ -649,7 +649,7 @@ root用户：
 7. 创建一个用于 quota 实验的用户 tom: useradd tom && echo uplooking|passwd tom
 8. 需要允许其他用户对/boot 目录写入文件操作: chmod -Rf o+w /boot
 9. 使用 xfs_quota 命令设置对 tom 用户在/boot 目录的磁盘配额,具体要求如下:
-使用 quota 专家模式限制磁盘软限制为 3m、磁盘硬限制为 6m、文件软限制为 3 个且文件硬限制为 6 个。 获取当前/boot 目录上的 quota 配额限制
+   使用 quota 专家模式限制磁盘软限制为 3m、磁盘硬限制为 6m、文件软限制为 3 个且文件硬限制为 6 个。 获取当前/boot 目录上的 quota 配额限制
 ```shell
 xfs_quota -x -c 'limit bsoft=3m bhard=6m isoft=3 ihard=6 tom' /boot
 xfs_quota -x -c report /boot
@@ -828,7 +828,7 @@ myvg-lv2--linear: 122880 65536 linear 252:25 288768
 1. 分别在rhel6和rhel7上划分/dev/vdb磁盘，要求，/dev/vdb1大小为1G，/dev/vdb2大小为2G；创建对应操作系统默认的文件系统，rhel6默认ext4，rhel7默认xfs。
 2. rhel6上将/dev/vdb2挂载在student家目录下使用，限制磁盘软限制为 3M、磁盘硬限制为 6M、文件软限制为 20 个且文件硬限制为 30 个
 3. rhel7上完成：
-root用户：
+   root用户：
 ```shell
  1. 查看内核是否支持 quota 功能:
  2. 查看 quota 程序包是否已经安装:

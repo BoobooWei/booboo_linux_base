@@ -79,7 +79,7 @@ cd /tmp/mplayer/MPlayer-1.0rc2
 
 * 创建目录`mkdir /usr/local/share/mplayer/skins/default/`
 * 将皮肤文件复制到/usr/local/share/mplayer/default/目录中
-`cp /tmp/mplayer/Blue/* /usr/local/share/mplayer/skins/default/`
+  `cp /tmp/mplayer/Blue/* /usr/local/share/mplayer/skins/default/`
 
 >从真机桌面用鼠标双击打开图形化界面的rhel6，去测试，是否安装成功。
 
@@ -251,8 +251,7 @@ Sqlite DBs complete
 
 ```shell
 [root@rhel7 tmp]# ll dvd7.1/ |grep repodata
-drwxr-xr-x. 2 root root
-4096 Mar 18 07:42 repodata
+drwxr-xr-x. 2 root root 4096 Mar 18 07:42 repodata
 ```
 
 ### 配置仓库
@@ -274,7 +273,10 @@ gpgcheck = 是否需要检测
 其中 baseurl
 1. 本地路径 file:///content/rhel6.5..... 以下省略 第三个 / 代表的是根 .
 2. 远程路径 协议 :// 位置
-
+      例:   http://
+       		ftp://
+       		nfs://
+       		
 [server]
 name = rhel7.1 repos
 baseurl = http://classroom.example.com/content/rhel6.5/x86_64/dvd/
