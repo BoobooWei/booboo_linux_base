@@ -122,12 +122,12 @@ lrwxrwxrwx. 1 root root 11 Jul 2 2015 menu.lst -> ./grub.conf
 -rw-r--r--. 1 root root 11364 Jul 2 2015 vstafs_stage1_5
 -rw-r--r--. 1 root root 13964 Jul 2 2015 xfs_stage1_5
 [root@rhel6 grub]# vim grub.conf
-default=0
-timeout=5
-splashimage=(hd0,0)/grub/splash.xpm.gz
-hiddenmenu
+default=0		===>默认菜单
+timeout=5		===>启动菜单超时5秒进入默认启动内核
+splashimage=(hd0,0)/grub/splash.xpm.gz	===>菜单的背景图片位置
+hiddenmenu		===>默认不看启动菜单
 title Red Hat Enterprise Linux (2.6.32-431.el6.x86_64)
-开机启动的系统名称,指定启动硬盘位置在第一个硬盘的第一个分区
+开机启动的系统名称(可以更改对其他没有影响),指定启动硬盘位置在第一个硬盘的第一个分区
 root (hd0,0)
 指定核心文件的名称及位置 /boot/ ,指定语言等等
 kernel /vmlinuz-2.6.32-431.el6.x86_64 ro root=/dev/mapper/vg_rhel6-LogVol01 rd_NO_LUKS
@@ -168,8 +168,8 @@ initrd /initramfs-2.6.32-431.el6.x86_64.img
 # 5 - X11
 # 6 - reboot (Do NOT set initdefault to this)
 #
-id:5:initdefault:
-[root@rhel6 etc]# ll /etc/rc.d
+id:5:initdefault:		===>默认启动等级(run-level)为5(中间的数字为启动等级)
+[root@rhel6 etc]# ll /etc/rc.d	===>根据默认启动等级，来读取相应的rc0-6.d目录中的文件
 total 60
 drwxr-xr-x. 2 root root 4096 Jul 2 2015 init.d
 -rwxr-xr-x. 1 root root 2617 Oct 10 2013 rc
@@ -184,14 +184,59 @@ drwxr-xr-x. 2 root root 4096 Jul 2 2015 rc6.d
 -rwxr-xr-x. 1 root root 19432 Oct 10 2013 rc.sysinit
 ```
 
+文件夹里都是软连接，软链接链接到/etc/rc.d/init.d目录下的文件，目录下都是服务的启动脚本，目录和etc/init.d下的内容一样，因为有个软连接在etc下面rcX.d下的文件K开头表示服务要关闭的，S开头的表示系统启动时要开启的，（例如rc0.d下，几乎都是K打头的），在5里后面的数字标示优先级，数字小优先级高，在6里这些数字无用，因为是并行的，没有依赖关系。
+
+无论是3还是5的runlevel，最后都会读到S99local文件，链接到/etc/rc.d/rc.local文件
+
+文件说明：这个脚本在所有脚本执行完之后执行，开机过程汇总最后读到的一个文件，这个文件是开机自定义启动脚本，把自己想要执行的命令写进来。系统启动命令也会完成。
+
 备注:以上分析均为 rhel6 操作系统, rhel7 启动改为 systemd 模式,相关文件在 `/usr/lib/systemd/system/*`
+
+### run-level(启动等级)
+
+Runlevel 0 是让init关闭所有进程并终止系统。
+
+Runlevel 1 是用来将系统转到单用户模式，单用户模式只能有系统管理员进入，在该模式下处理那些在有登录用户的情况下不能进行更改的文件。
+
+Runlevel 2 是允许系统进入多用户的模式，但并不支持文件共享，这种模式很少应用。
+
+Runlevel 3 是最常用的运行模式，主要用来提供真正的多用户模式，也是多数服务器的缺省模式。
+
+Runlevel 4 一般不被系统使用，用户可以设计自己的系统状态并将其应用到runlevel 4阶段，尽管很少使用，但使用该系统可以实现一些特定的登录请求。
+
+Runlevel 5 是将系统初始化为专用的X Window终端。对功能强大的Linux系统来说，这并不是好的选择，但用户如果需要这样，也可以通过在runlevel启动来实现该方案。
+
+Runlevel 6 是关闭所有运行的进程并重新启动系统。
+
+## 相关的命令
+
+rhel6
+
+chkconfig --list	===>查看不同等级中各项服务的启动情况(开机启动项)
+
+chkconfig 服务名 on	===>开启某个服务开机自启动，off代表关闭
+
+chkconfig --level 35 服务名 off	===>在启动等级为3和5的时候该服务不开机启动
+
+
+
+rhel7
+
+开机自启的服务通过systemctl enable命令来实现
+
+Systemctl enable httpd	===>自启动httpd服务，关闭使用disable。
+
+systemctl get-default		===>查看当前默认启动级别(启动级别的说明查看/etc/inittab)
+
+systemctl set-default multi-user.target	===>设置默认启动级别为3(7的的启动级别名称有所变化)
 
 ## 实验
 
 ### rhel6 单用户模式修改密码
 
 - 1> 进入到数及时界面时,按上下键进入以下界面,选择 kernel 一行,按下 e 进行编辑
-- 2> 在最后追加 1 或者 single 后,按下 esc3> 再按下 b ,启动后,进入单人模式后,输入 passwd 进行密码修改,修改完成后, reboot 即可。
+- 2> 在最后追加 “空格”和1 或者 “空格” single 后,按下 esc
+- 3> 再按下 b ,启动后,进入单人模式后,输入 passwd 进行密码修改,修改完成后, reboot 即可。
 
 ![39](pic/39.png)
 
@@ -203,13 +248,13 @@ drwxr-xr-x. 2 root root 4096 Jul 2 2015 rc6.d
 ### rhel7 单用户模式修改密码
 
 - 1> 进入如下界面后按 e 进入编辑模式
-- 2> 找到 linux16 开始的那一行,删除没用的,在最后追加 rd.break ,然后按 Ctrl-x 重启即可进入单人模式
-- 3> 进入单人模式后,用 mount 命令查看一下,会发现根目录时只读模式,因此需要重新挂载为读写模式
+- 2> 找到 linux16 开始的那一行,删除没用的,在最后追加 rd.break ,然后按 Ctrl+x 重启即可进入单人模式
+- 3> 进入单用户模式后,用 mount 命令查看一下,会发现根目录时只读模式,因此需要重新挂载为读写模式
 
 ```shell
 mount -o remount,rw /sysroot
-chroot /sysroot
-passwd
+chroot /sysroot		===>提高权限
+passwd				===>修改密码的命令
 touch /.autorelabel ===>autorelabel 自动重新标记, selinux
 exit
 exit
@@ -219,7 +264,37 @@ exit
 
 ![43](pic/43.png)
 
+###rhel6 GRUB菜单加密
 
+grub-md5-crypt
+
+输入密码，生成一串MD5值，这个就是grub密码，复制好这段内容，粘贴到配置文件中
+
+vim /boot/grub/grub.conf   
+
+title那一行的上面加上“password redhat”这样做是明文密码，不安全，所以也可写为“password –-md5 xxxxxxxxx”
+
+这一行要放在title的上面
+
+放在title的下面是系统启动需要密码才可以启动
+
+### rhel7 GRUB2菜单加密
+
+vim /etc/grub.d/40_custom
+
+set superusers="root"		===>设置超级用户的名称，注意：名称任意可以不用是系统中存在的用户
+
+password root redhat			===>设置用户名和密码，注意：该密码为明文，如果需要密文需要生成密文密码
+
+保存退出
+
+grub2-mkconfig -o /boot/grub2/grub.cfg		===>使用该命令来重新生成grub.cfg文件来使配置生效
+
+
+
+grub2-mkpasswd-pbkdf2	===>该命令为生成加密密码
+
+password_pbkdf2 		===>如果使用加密的密文需要定义密码的加密方式，后面同上跟上用户名和加密后的密码
 
 ## Linux 开机启动流程课后作业
 
