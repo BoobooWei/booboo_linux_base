@@ -476,7 +476,7 @@ ACL 可以针对单一用户 , 单一文件 , 单一目录 r,w,x 的权限规范
 
 getfacl filename
 
-​```shell
+```shell
 [root@www tmp]# getfacl dabao
  file: dabao
  owner: dabao
@@ -503,7 +503,7 @@ setfacl [-bkRd] [{-m|-x} acl 参数 ] 目标文件名
 
 命令格式 :
 
-​```shell
+```shell
 『 u:[ 使用者账号列表 ]:[ rwx] 』 <= = 针对特定用户
 『 g:[ 群组列表 ]:[rwx] 』 <= = 针对特定用户组
 『 m:[ rwx] 』 <= = 针对有效权限 mask
@@ -653,7 +653,7 @@ which [ -a] command
 1. 系统内建命令找不到 , type 查看
 2. alias 命令别名
 
-​```shell
+```shell
 [ root@www ~]# which cat
 /bin/cat
 [ root@www ~]# which postfix
